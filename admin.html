@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — Workshop Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen text-gray-800 font-sans">
+
+    <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight text-gray-900">Workshop Registrations</h1>
+                <p class="text-sm text-gray-500 mt-1">Manage attendee check-ins and live statistics.</p>
+            </div>
+            <button onclick="fetchAttendees()" class="bg-white border border-gray-200 hover:bg-gray-50 px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition">
+                🔄 Refresh List
+            </button>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Signups</p>
+                <p id="statTotal" class="text-3xl font-bold text-gray-900 mt-1">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                <p class="text-xs font-semibold uppercase tracking-wider text-green-500">Checked In</p>
+                <p id="statAttended" class="text-3xl font-bold text-green-600 mt-1">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                <p class="text-xs font-semibold uppercase tracking-wider text-amber-500">Absent / Pending</p>
+                <p id="statAbsent" class="text-3xl font-bold text-amber-600 mt-1">0</p>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm mb-6 flex items-center">
+            <div class="w-full relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">🔍</span>
+                <input type="text" id="searchBar" oninput="filterTable()" class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:bg-white focus:ring-2 focus:ring-rose-500 transition" placeholder="Search by name or email address...">
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 border-b border-gray-100 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                            <th class="p-4">Full Name</th>
+                            <th class="p-4">Contact Information</th>
+                            <th class="p-4 text-center">Attendance Checklist</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendeeTableBody" class="divide-y divide-gray-50 text-sm">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GET_REGS_URL = 'http://127.0.0.1:8000/api/admin/registrations';
+        const PATCH_ATTENDANCE_BASE = 'http://127.0.0.1:8000/api/admin/registrations';
+
+        let allAttendees = []; // Global memory array for searching
+
+        async function fetchAttendees() {
+            try {
+                const response = await fetch(GET_REGS_URL);
+                if (!response.ok) throw new Error("Failed to load records");
+                allAttendees = await response.json();
+                renderTable(allAttendees);
+            } catch (err) {
+                console.error(err);
+                document.getElementById('attendeeTableBody').innerHTML = `
+                    <tr><td colspan="3" class="p-8 text-center text-red-500">Could not fetch data. Check if your API is running.</td></tr>
+                `;
+            }
+        }
+
+        function calculateStats(data) {
+            const total = data.length;
+            const attended = data.filter(a => a.attended).length;
+            const absent = total - attended;
+
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('statAttended').innerText = attended;
+            document.getElementById('statAbsent').innerText = absent;
+        }
+
+        function renderTable(data) {
+            calculateStats(data);
+            const tbody = document.getElementById('attendeeTableBody');
+            
+            if(data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-gray-400">No registrations found matching description.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.map(person => `
+                <tr class="hover:bg-gray-50/70 transition">
+                    <td class="p-4 font-semibold text-gray-900">${person.full_name}</td>
+                    <td class="p-4 text-gray-500">
+                        <div>📧 ${person.email}</div>
+                        <div class="text-xs mt-0.5">📞 ${person.phone_number}</div>
+                    </td>
+                    <td class="p-4 text-center">
+                        <button onclick="toggleAttendance(${person.id}, ${person.attended})" 
+                            class="px-4 py-1.5 rounded-full text-xs font-semibold transition border ${
+                                person.attended 
+                                ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100' 
+                                : 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
+                            }">
+                            ${person.attended ? '✓ Checked In' : '✗ Absent'}
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterTable() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const filtered = allAttendees.filter(p => 
+                p.full_name.toLowerCase().includes(query) || 
+                p.email.toLowerCase().includes(query)
+            );
+            renderTable(filtered);
+        }
+
+        async function toggleAttendance(id, currentStatus) {
+            try {
+                const response = await fetch(`${PATCH_ATTENDANCE_BASE}/${id}/attendance`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ attended: !currentStatus })
+                });
+
+                if (response.ok) {
+                    // Update locally for quick UI re-renders instead of fetching the whole database again
+                    allAttendees = allAttendees.map(p => p.id === id ? { ...p, attended: !currentStatus } : p);
+                    // Retain whatever search filter is typed
+                    filterTable();
+                }
+            } catch (error) {
+                alert("Failed to sync attendance update with the server backend.");
+            }
+        }
+
+        // Initial fetch when the dashboard window loads up
+        window.onload = fetchAttendees;
+    </script>
+</body>
+</html>
