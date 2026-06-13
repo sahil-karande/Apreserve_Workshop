@@ -11,7 +11,7 @@
             position: relative;
             min-height: 100vh;
             background: url('bg-desktop.png') no-repeat center center fixed;
-            background-size: cover;
+            background-size: 100% 100%;
             background-color: #fde8ec;
             overflow-x: hidden;
         }
@@ -19,7 +19,8 @@
         /* Mobile background */
         @media (max-width: 768px) {
             body.watercolor-bg {
-                background-image: url('bg-mobile.png');
+                background-image: url('bg-mobile.jpg');
+                background-attachment: scroll;
             }
         }
 
