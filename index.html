@@ -10,80 +10,20 @@
         body.watercolor-bg {
             position: relative;
             min-height: 100vh;
-            background-color: #fce4ec;
-            background-image:
-                /* Top-right cloud */
-                radial-gradient(ellipse 55% 45% at 85% 5%, rgba(244,143,177,0.55) 0%, transparent 70%),
-                /* Left-center cloud */
-                radial-gradient(ellipse 50% 60% at 5% 45%, rgba(244,143,177,0.45) 0%, transparent 65%),
-                /* Bottom-left cloud */
-                radial-gradient(ellipse 45% 40% at 15% 90%, rgba(240,128,168,0.40) 0%, transparent 60%),
-                /* Center subtle wash */
-                radial-gradient(ellipse 60% 50% at 50% 50%, rgba(252,228,236,0.6) 0%, transparent 70%),
-                /* Top-left small accent */
-                radial-gradient(ellipse 30% 25% at 10% 10%, rgba(236,110,150,0.30) 0%, transparent 60%),
-                /* Bottom-right accent */
-                radial-gradient(ellipse 35% 30% at 80% 85%, rgba(244,143,177,0.35) 0%, transparent 60%);
+            background: url('bg-desktop.png') no-repeat center center fixed;
+            background-size: cover;
+            background-color: #fde8ec;
             overflow-x: hidden;
         }
 
-        /* ── Decorative SVG Elements ── */
-        .decor-branch-top {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 180px;
-            height: 180px;
-            z-index: 0;
-            opacity: 0.45;
-            pointer-events: none;
-        }
-        .decor-flower-bottom {
-            position: fixed;
-            bottom: 0;
-            right: 20px;
-            width: 160px;
-            height: 260px;
-            z-index: 0;
-            opacity: 0.40;
-            pointer-events: none;
-        }
-        .decor-wave-left {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 120px;
-            height: 60%;
-            z-index: 0;
-            opacity: 0.25;
-            pointer-events: none;
-        }
-        .decor-wave-right {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 100px;
-            height: 65%;
-            z-index: 0;
-            opacity: 0.22;
-            pointer-events: none;
-        }
-
-        /* ── Responsive adjustments ── */
+        /* Mobile background */
         @media (max-width: 768px) {
-            .decor-branch-top { width: 120px; height: 120px; opacity: 0.35; }
-            .decor-flower-bottom { width: 110px; height: 180px; right: 10px; opacity: 0.30; }
-            .decor-wave-left { width: 80px; opacity: 0.18; }
-            .decor-wave-right { width: 70px; opacity: 0.16; }
-        }
-        @media (max-width: 480px) {
-            .decor-branch-top { width: 90px; height: 90px; opacity: 0.28; }
-            .decor-flower-bottom { width: 80px; height: 140px; opacity: 0.25; }
-            .decor-wave-left { width: 55px; opacity: 0.14; }
-            .decor-wave-right { width: 50px; opacity: 0.12; }
+            body.watercolor-bg {
+                background-image: url('bg-mobile.png');
+            }
         }
 
-        /* Ensure card sits above decorations */
+        /* Ensure card sits above background */
         .card-container {
             position: relative;
             z-index: 1;
@@ -92,64 +32,6 @@
 </head>
 <body class="watercolor-bg min-h-screen flex items-center justify-center p-4">
 
-    <!-- Decorative botanical branch — top-left -->
-    <svg class="decor-branch-top" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g stroke="#d4748a" stroke-width="1.2" stroke-linecap="round" fill="none">
-            <!-- Main branch -->
-            <path d="M10 10 Q60 50 80 100 Q95 140 90 180"/>
-            <!-- Left leaves -->
-            <path d="M30 30 Q15 50 25 60 Q35 50 30 30"/>
-            <path d="M45 55 Q25 70 35 85 Q50 72 45 55"/>
-            <path d="M60 80 Q40 95 50 110 Q65 97 60 80"/>
-            <!-- Right leaves -->
-            <path d="M50 40 Q70 35 65 55 Q55 48 50 40"/>
-            <path d="M68 65 Q88 58 85 78 Q73 72 68 65"/>
-            <path d="M78 90 Q98 85 95 105 Q83 98 78 90"/>
-            <!-- Small buds -->
-            <path d="M20 18 Q12 8 18 5 Q24 8 20 18"/>
-            <path d="M85 130 Q75 120 80 115 Q88 120 85 130"/>
-        </g>
-    </svg>
-
-    <!-- Decorative wavy line — left side -->
-    <svg class="decor-wave-left" viewBox="0 0 100 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M60 500 Q20 430 55 370 Q90 310 40 250 Q-5 190 50 130 Q80 90 45 30" 
-              stroke="white" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-    </svg>
-
-    <!-- Decorative wavy line — right side -->
-    <svg class="decor-wave-right" viewBox="0 0 100 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M40 0 Q80 70 45 140 Q10 210 60 280 Q105 340 50 400 Q20 440 55 500" 
-              stroke="white" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-    </svg>
-
-    <!-- Decorative flower stems — bottom-right -->
-    <svg class="decor-flower-bottom" viewBox="0 0 160 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g stroke="#d4748a" stroke-width="1.2" stroke-linecap="round" fill="none">
-            <!-- Main stem -->
-            <path d="M80 280 Q78 220 85 170 Q90 130 80 80"/>
-            <!-- Branch left -->
-            <path d="M82 180 Q60 160 50 140"/>
-            <!-- Branch right -->
-            <path d="M84 150 Q105 130 115 110"/>
-            <!-- Small branch -->
-            <path d="M81 120 Q65 105 55 85"/>
-            <!-- Flower buds -->
-            <circle cx="80" cy="75" r="5" stroke-width="1.2"/>
-            <path d="M75 72 Q80 60 85 72"/>
-            <path d="M73 77 Q80 66 87 77"/>
-            <circle cx="50" cy="135" r="4" stroke-width="1.2"/>
-            <path d="M46 132 Q50 122 54 132"/>
-            <circle cx="115" cy="105" r="4" stroke-width="1.2"/>
-            <path d="M111 102 Q115 92 119 102"/>
-            <circle cx="55" cy="80" r="3.5" stroke-width="1.2"/>
-            <path d="M52 77 Q55 68 58 77"/>
-            <!-- Tiny leaf pairs -->
-            <path d="M78 200 Q68 195 72 185 Q80 192 78 200"/>
-            <path d="M84 200 Q94 195 90 185 Q82 192 84 200"/>
-            <path d="M86 160 Q96 155 92 145 Q84 152 86 160"/>
-        </g>
-    </svg>
 
     <div class="card-container bg-white rounded-2xl shadow-xl max-w-4xl w-full overflow-hidden flex flex-col md:flex-row">
         <div class="md:w-1/2 bg-rose-500 text-white p-8 flex flex-col justify-between relative overflow-hidden">
