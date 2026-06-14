@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pipe Cleaner Flower Art Workshop</title>
+    <meta name="description" content="Register for the Pipe Cleaner Flower Art Workshop. Learn to craft vibrant, everlasting blossoms with expert guidance.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        * { font-family: 'Inter', sans-serif; }
+
         /* ── Pink Watercolor Background ── */
         body.watercolor-bg {
             position: relative;
@@ -53,28 +59,191 @@
             background: rgba(255, 255, 255, 0.75) !important;
         }
 
-        /* ── Payment Section ── */
-        .payment-section {
-            background: rgba(255, 255, 255, 0.30);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.40);
+        /* ── Payment Modal Overlay ── */
+        .payment-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
         }
+        .payment-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .payment-overlay-bg {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+        .payment-modal {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.60);
+            border-radius: 1.25rem;
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(225, 29, 72, 0.15), 0 8px 24px rgba(0,0,0,0.08);
+            transform: translateY(30px) scale(0.96);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .payment-overlay.active .payment-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        /* ── Tab Buttons ── */
+        .tab-btn {
+            flex: 1;
+            padding: 0.65rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 0.6rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            color: #6b7280;
+            background: transparent;
+            border: 1.5px solid transparent;
+            position: relative;
+        }
+        .tab-btn:hover {
+            color: #e11d48;
+            background: rgba(225, 29, 72, 0.05);
+        }
+        .tab-btn.active {
+            color: #fff;
+            background: linear-gradient(135deg, #e11d48, #f43f5e);
+            border-color: transparent;
+            box-shadow: 0 4px 14px rgba(225, 29, 72, 0.3);
+        }
+        .tab-btn .tab-icon {
+            font-size: 1.25rem;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* ── Tab Content ── */
+        .tab-content { display: none; }
+        .tab-content.active {
+            display: block;
+            animation: tabFadeIn 0.3s ease;
+        }
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Price Badge ── */
         .price-badge {
             background: linear-gradient(135deg, #e11d48, #f43f5e);
             color: white;
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 800;
         }
-        .upi-id-box {
-            background: rgba(255, 255, 255, 0.50);
-            border: 1px dashed rgba(225, 29, 72, 0.40);
+
+        /* ── QR Container ── */
+        .qr-container {
+            background: white;
+            border-radius: 14px;
+            padding: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+
+        /* ── UPI Input ── */
+        .upi-input-field {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1.5px solid rgba(225, 29, 72, 0.25);
+            border-radius: 0.6rem;
+            padding: 0.7rem 1rem;
+            font-size: 0.9rem;
+            width: 100%;
+            outline: none;
+            transition: all 0.2s ease;
+            font-family: 'Inter', monospace;
+        }
+        .upi-input-field:focus {
+            border-color: #e11d48;
+            box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* ── Pay Button ── */
+        .pay-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.85rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #e11d48, #be123c);
+            border: none;
+            border-radius: 0.75rem;
             cursor: pointer;
+            box-shadow: 0 6px 20px rgba(225, 29, 72, 0.35);
             transition: all 0.2s ease;
         }
-        .upi-id-box:hover {
-            background: rgba(255, 255, 255, 0.70);
+        .pay-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 26px rgba(225, 29, 72, 0.45);
         }
+        .pay-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* ── Copy Box ── */
+        .upi-copy-box {
+            background: rgba(255, 255, 255, 0.60);
+            border: 1.5px dashed rgba(225, 29, 72, 0.35);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 0.6rem;
+        }
+        .upi-copy-box:hover {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: rgba(225, 29, 72, 0.6);
+        }
+
+        /* ── Close Button ── */
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.06);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: #6b7280;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+        .modal-close-btn:hover {
+            background: rgba(225, 29, 72, 0.1);
+            color: #e11d48;
+        }
+
+        /* ── Toast ── */
         .copy-toast {
             position: fixed;
             bottom: 30px;
@@ -87,22 +256,65 @@
             font-size: 0.875rem;
             opacity: 0;
             transition: opacity 0.3s ease;
-            z-index: 100;
+            z-index: 2000;
             pointer-events: none;
         }
-        .copy-toast.show {
-            opacity: 1;
+        .copy-toast.show { opacity: 1; }
+
+        /* ── Divider ── */
+        .divider-line {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 1rem 0;
         }
-        .qr-container {
-            background: white;
-            border-radius: 12px;
-            padding: 8px;
-            display: inline-block;
+        .divider-line::before, .divider-line::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.08);
+        }
+        .divider-line span {
+            font-size: 0.7rem;
+            color: #9ca3af;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* ── Amount chip in modal ── */
+        .amount-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: linear-gradient(135deg, rgba(225, 29, 72, 0.08), rgba(244, 63, 94, 0.12));
+            border: 1px solid rgba(225, 29, 72, 0.2);
+            border-radius: 9999px;
+            padding: 0.35rem 0.85rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #be123c;
+        }
+
+        /* ── Pulse animation for direct pay icon ── */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.3); }
+            50%      { box-shadow: 0 0 0 10px rgba(225, 29, 72, 0); }
+        }
+        .pulse-icon {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        /* Scrollbar styling for modal */
+        .payment-modal::-webkit-scrollbar { width: 4px; }
+        .payment-modal::-webkit-scrollbar-track { background: transparent; }
+        .payment-modal::-webkit-scrollbar-thumb {
+            background: rgba(225, 29, 72, 0.2);
+            border-radius: 999px;
         }
     </style>
 </head>
 <body class="watercolor-bg min-h-screen flex flex-col items-center justify-center p-4 gap-6">
-
 
     <!-- ── Registration Card (Glassmorphism) ── -->
     <div class="card-container glass-card rounded-2xl shadow-xl max-w-4xl w-full overflow-hidden flex flex-col md:flex-row">
@@ -149,7 +361,7 @@
                     <input type="tel" id="phone" required class="glass-input w-full px-4 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 transition" placeholder="+91 XXXXX XXXXX">
                 </div>
 
-                <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-medium py-3 rounded-lg shadow-lg shadow-rose-300/40 transition active:scale-[0.98]">
+                <button type="submit" id="registerBtn" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-medium py-3 rounded-lg shadow-lg shadow-rose-300/40 transition active:scale-[0.98]">
                     Register for Workshop
                 </button>
             </form>
@@ -158,51 +370,126 @@
         </div>
     </div>
 
-    <!-- ── Payment Section ── -->
-    <div class="card-container payment-section rounded-2xl shadow-xl max-w-4xl w-full overflow-hidden p-8">
-        <div class="flex flex-col md:flex-row items-center gap-8">
 
-            <!-- Left: Price & Details -->
-            <div class="flex-1 text-center md:text-left">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">💳 Workshop Fee</h2>
-                <p class="text-gray-600 text-sm mb-4">Complete your payment to confirm your registration.</p>
-                
-                <div class="price-badge inline-block px-6 py-3 rounded-xl shadow-lg shadow-rose-300/30 mb-5">
-                    ₹699
+    <!-- ══════════════════════════════════════════════ -->
+    <!-- ── Payment Modal Overlay ── -->
+    <!-- ══════════════════════════════════════════════ -->
+    <div id="paymentOverlay" class="payment-overlay">
+        <div class="payment-overlay-bg" onclick="closePaymentModal()"></div>
+        <div class="payment-modal p-6 md:p-8">
+
+            <!-- Close Button -->
+            <button class="modal-close-btn" onclick="closePaymentModal()" aria-label="Close payment">✕</button>
+
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-rose-100 to-pink-100 mb-3">
+                    <span class="text-2xl">💳</span>
                 </div>
-
-                <div class="space-y-2 text-sm text-gray-700">
-                    <p>✅ All materials included</p>
-                    <p>✅ Expert-guided session</p>
-                    <p>✅ Take-home flower creations</p>
-                    <p>✅ Refreshments provided</p>
+                <h2 class="text-xl font-bold text-gray-800">Complete Payment</h2>
+                <p class="text-gray-500 text-sm mt-1">Choose your preferred payment method</p>
+                <div class="flex justify-center mt-3">
+                    <div class="amount-chip">
+                        <span>Amount:</span>
+                        <span class="text-lg">₹699</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Center: QR Code -->
-            <div class="flex flex-col items-center gap-3">
-                <p class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Scan QR to Pay</p>
-                <div class="qr-container shadow-lg">
-                    <img src="payment-qr.png" alt="Payment QR Code" class="w-48 h-48 object-contain rounded-lg">
-                </div>
-                <p class="text-xs text-gray-500">Use any UPI app to scan</p>
+            <!-- Tab Buttons -->
+            <div class="flex gap-2 p-1 bg-gray-100/60 rounded-xl mb-5" id="paymentTabs">
+                <button class="tab-btn active" data-tab="qr" onclick="switchTab('qr')">
+                    <span class="tab-icon">📷</span>
+                    Scan QR
+                </button>
+                <button class="tab-btn" data-tab="upi-id" onclick="switchTab('upi-id')">
+                    <span class="tab-icon">🆔</span>
+                    UPI ID
+                </button>
+                <button class="tab-btn" data-tab="direct" onclick="switchTab('direct')">
+                    <span class="tab-icon">⚡</span>
+                    Direct Pay
+                </button>
             </div>
 
-            <!-- Right: UPI ID & Instructions -->
-            <div class="flex-1 text-center md:text-left">
-                <p class="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">Or pay via UPI ID</p>
-                
-                <div id="upiCopyBox" class="upi-id-box rounded-lg px-4 py-3 mb-4 flex items-center justify-between gap-2" onclick="copyUPI()">
-                    <span class="font-mono text-sm text-gray-800 font-semibold" id="upiIdText">yourname@upi</span>
-                    <span class="text-xs text-rose-500 font-medium">📋 Copy</span>
-                </div>
 
-                <div class="space-y-3 text-xs text-gray-600">
-                    <p class="font-semibold text-gray-700 text-sm">How to pay:</p>
-                    <p>1️⃣ Open any UPI app (GPay, PhonePe, Paytm)</p>
-                    <p>2️⃣ Scan the QR code or enter the UPI ID</p>
-                    <p>3️⃣ Pay <strong class="text-gray-800">₹699</strong></p>
-                    <p>4️⃣ Share screenshot on WhatsApp for confirmation</p>
+            <!-- ── Tab 1: QR Code ── -->
+            <div class="tab-content active" id="tab-qr">
+                <div class="flex flex-col items-center text-center">
+                    <div class="qr-container mb-3">
+                        <img src="payment-qr.png" alt="Payment QR Code" class="w-52 h-52 object-contain rounded-lg">
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4">Open any UPI app → Scan this QR → Pay <strong class="text-rose-600">₹699</strong></p>
+
+                    <div class="divider-line w-full">
+                        <span>or copy upi id</span>
+                    </div>
+
+                    <div class="upi-copy-box px-4 py-2.5 flex items-center justify-between gap-3 w-full" onclick="copyUPI()">
+                        <span class="font-mono text-sm text-gray-800 font-semibold" id="upiIdText">yourname@upi</span>
+                        <span class="text-xs text-rose-500 font-medium whitespace-nowrap">📋 Copy</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ── Tab 2: Pay via UPI ID ── -->
+            <div class="tab-content" id="tab-upi-id">
+                <div class="flex flex-col items-center text-center">
+                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-rose-50 to-pink-50 mb-3">
+                        <span class="text-xl">🏦</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">Enter your UPI ID to pay directly from your linked UPI app.</p>
+
+                    <div class="w-full text-left mb-4">
+                        <label class="block text-xs font-semibold text-gray-600 uppercase mb-1.5 tracking-wide">Your UPI ID</label>
+                        <input type="text" id="userUpiId" class="upi-input-field" placeholder="e.g. yourname@okhdfcbank">
+                        <p class="text-xs text-gray-400 mt-1.5">This will redirect you to your UPI app to complete payment of <strong class="text-rose-600">₹699</strong></p>
+                    </div>
+
+                    <button class="pay-btn" onclick="payViaUpiId()">
+                        <span>💰</span>
+                        Pay ₹699 via UPI
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- ── Tab 3: Direct Pay ── -->
+            <div class="tab-content" id="tab-direct">
+                <div class="flex flex-col items-center text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-rose-100 to-pink-100 mb-4 pulse-icon">
+                        <span class="text-3xl">⚡</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-1">One-Tap Payment</h3>
+                    <p class="text-sm text-gray-500 mb-5">Click below to open your default UPI app and pay instantly.</p>
+
+                    <div class="w-full bg-gradient-to-r from-rose-50/60 to-pink-50/60 rounded-xl p-4 mb-5 border border-rose-100/60">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Workshop Fee</span>
+                            <span class="text-2xl font-extrabold text-rose-600">₹699</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-1">
+                            <span class="text-xs text-gray-400">Pipe Cleaner Flower Art</span>
+                            <span class="text-xs text-gray-400">One-time</span>
+                        </div>
+                    </div>
+
+                    <button class="pay-btn" onclick="directPay()">
+                        <span>🚀</span>
+                        Pay ₹699 Now
+                    </button>
+
+                    <p class="text-xs text-gray-400 mt-3">Supports GPay, PhonePe, Paytm & more</p>
+                </div>
+            </div>
+
+
+            <!-- Footer Instructions -->
+            <div class="mt-5 pt-4 border-t border-gray-200/50">
+                <div class="flex items-start gap-2 text-xs text-gray-500">
+                    <span class="mt-0.5">📸</span>
+                    <p>After payment, please share the screenshot on <strong class="text-gray-700">WhatsApp</strong> for confirmation.</p>
                 </div>
             </div>
 
@@ -213,8 +500,13 @@
     <div id="copyToast" class="copy-toast">✅ UPI ID copied to clipboard!</div>
 
     <script>
-        const API_URL = 'http://127.0.0.1:8000/api/register'; // Point to your FastAPI address
+        // ─── CONFIG ───
+        const API_URL = 'http://127.0.0.1:8000/api/register';
+        const UPI_PAYEE_ID = 'yourname@upi';      // ← Replace with your actual UPI ID
+        const UPI_PAYEE_NAME = 'Workshop';          // ← Replace with payee display name
+        const WORKSHOP_AMOUNT = 699;
 
+        // ─── REGISTRATION FORM ───
         document.getElementById('registrationForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const statusMsg = document.getElementById('statusMessage');
@@ -236,27 +528,79 @@
 
                 if (response.ok) {
                     statusMsg.className = "mt-4 p-3 rounded-lg text-sm text-center bg-green-50/70 text-green-700 border border-green-200";
-                    statusMsg.innerText = "🎉 Registration successful! See you at the workshop.";
-                    document.getElementById('registrationForm').reset();
+                    statusMsg.innerText = "🎉 Registration successful! Proceed to payment.";
+                    statusMsg.classList.remove('hidden');
+                    // Open payment modal after successful registration
+                    setTimeout(() => openPaymentModal(), 600);
                 } else {
                     statusMsg.className = "mt-4 p-3 rounded-lg text-sm text-center bg-red-50/70 text-red-700 border border-red-200";
                     statusMsg.innerText = result.detail || "An error occurred.";
+                    statusMsg.classList.remove('hidden');
                 }
             } catch (error) {
                 statusMsg.className = "mt-4 p-3 rounded-lg text-sm text-center bg-red-50/70 text-red-700 border border-red-200";
                 statusMsg.innerText = "Failed to connect to backend server.";
+                statusMsg.classList.remove('hidden');
             }
-            statusMsg.classList.remove('hidden');
         });
 
-        // Copy UPI ID to clipboard
+        // ─── PAYMENT MODAL ───
+        function openPaymentModal() {
+            document.getElementById('paymentOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closePaymentModal();
+        });
+
+        // ─── TAB SWITCHING ───
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tabName);
+            });
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.toggle('active', content.id === `tab-${tabName}`);
+            });
+        }
+
+        // ─── COPY UPI ID ───
         function copyUPI() {
-            const upiId = document.getElementById('upiIdText').innerText;
-            navigator.clipboard.writeText(upiId).then(() => {
+            navigator.clipboard.writeText(UPI_PAYEE_ID).then(() => {
                 const toast = document.getElementById('copyToast');
                 toast.classList.add('show');
                 setTimeout(() => toast.classList.remove('show'), 2000);
             });
+        }
+
+        // ─── PAY VIA USER'S UPI ID ───
+        function payViaUpiId() {
+            const userUpi = document.getElementById('userUpiId').value.trim();
+            if (!userUpi) {
+                document.getElementById('userUpiId').focus();
+                document.getElementById('userUpiId').style.borderColor = '#e11d48';
+                setTimeout(() => {
+                    document.getElementById('userUpiId').style.borderColor = '';
+                }, 1500);
+                return;
+            }
+            // Build UPI deep link — the payer's UPI app will open with pre-filled details
+            const upiLink = `upi://pay?pa=${encodeURIComponent(UPI_PAYEE_ID)}&pn=${encodeURIComponent(UPI_PAYEE_NAME)}&am=${WORKSHOP_AMOUNT}&cu=INR&tn=${encodeURIComponent('Workshop Fee Payment')}`;
+            window.location.href = upiLink;
+        }
+
+        // ─── DIRECT PAY ───
+        function directPay() {
+            const upiLink = `upi://pay?pa=${encodeURIComponent(UPI_PAYEE_ID)}&pn=${encodeURIComponent(UPI_PAYEE_NAME)}&am=${WORKSHOP_AMOUNT}&cu=INR&tn=${encodeURIComponent('Workshop Fee Payment')}`;
+            window.location.href = upiLink;
         }
     </script>
 </body>
