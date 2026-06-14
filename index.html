@@ -28,6 +28,19 @@
                 background-image: url('bg-mobile.jpg');
                 background-attachment: scroll;
             }
+            .brand-badge {
+                padding: 1rem 1.2rem 0.9rem !important;
+            }
+            .brand-name {
+                font-size: 1.6rem !important;
+                letter-spacing: 0.04em !important;
+            }
+        }
+        @media (max-width: 380px) {
+            .brand-name {
+                font-size: 1.35rem !important;
+                letter-spacing: 0.02em !important;
+            }
         }
 
         /* ── Glassmorphism Card ── */
@@ -316,11 +329,11 @@
         <div class="md:w-1/2 glass-left p-8 flex flex-col justify-between relative overflow-hidden">
             
             <div class="relative z-10">
-                <div style="display: inline-block; position: relative; text-align: center; padding: 1.4rem 2.2rem 1.2rem; border-radius: 1rem; background: linear-gradient(145deg, rgba(255,255,255,0.55), rgba(253,232,236,0.45), rgba(255,240,243,0.5)); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(196,104,124,0.12); box-shadow: 0 8px 32px rgba(163,70,90,0.1), 0 2px 8px rgba(163,70,90,0.06), inset 0 1px 0 rgba(255,255,255,0.7), inset 0 -1px 0 rgba(196,104,124,0.05);">
+                <div class="brand-badge" style="display: inline-block; position: relative; text-align: center; padding: 1.4rem 2.2rem 1.2rem; border-radius: 1rem; background: linear-gradient(145deg, rgba(255,255,255,0.55), rgba(253,232,236,0.45), rgba(255,240,243,0.5)); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(196,104,124,0.12); box-shadow: 0 8px 32px rgba(163,70,90,0.1), 0 2px 8px rgba(163,70,90,0.06), inset 0 1px 0 rgba(255,255,255,0.7), inset 0 -1px 0 rgba(196,104,124,0.05); max-width: 100%;">
                     <!-- Top decorative line -->
                     <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 60%; height: 2px; background: linear-gradient(90deg, transparent, rgba(163,70,90,0.3), rgba(196,104,124,0.5), rgba(163,70,90,0.3), transparent); border-radius: 1px;"></div>
                     <!-- Brand name -->
-                    <div style="font-family: 'Playfair Display', serif; font-size: 2.55rem; color: #7a2e3f; line-height: 1; letter-spacing: 0.08em; font-weight: 700; text-shadow: 0 1px 2px rgba(163,70,90,0.08);">APRESERVE</div>
+                    <div class="brand-name" style="font-family: 'Playfair Display', serif; font-size: 2.55rem; color: #7a2e3f; line-height: 1; letter-spacing: 0.08em; font-weight: 700; text-shadow: 0 1px 2px rgba(163,70,90,0.08); white-space: nowrap;">APRESERVE</div>
                     <!-- Ornamental presents -->
                     <div style="display: flex; align-items: center; justify-content: flex-end; gap: 0.5rem; margin-top: 6px;">
                         <div style="width: 28px; height: 1px; background: linear-gradient(90deg, transparent, rgba(163,70,90,0.35));"></div>
