@@ -455,10 +455,10 @@
 
             <!-- ── Single View: QR Code & Copy UPI ── -->
             <div class="flex flex-col items-center text-center mt-2">
-                <div class="qr-container mb-3 shadow-sm border border-gray-100 rounded-xl p-2 bg-white cursor-pointer hover:scale-105 transition-transform active:scale-95" onclick="openUpiApp()" title="Tap to open UPI App">
+                <div class="qr-container mb-3 shadow-sm border border-gray-100 rounded-xl p-2 bg-white">
                     <img src="riddhi_qr.jpeg" alt="Payment QR Code" class="w-52 h-52 object-contain rounded-lg">
                 </div>
-                <p class="text-sm text-gray-600 mb-5">Open <strong class="text-rose-600">GPay, PhonePe, or Paytm</strong><br>Scan this QR <span class="font-bold text-rose-500">or Tap It</span> to pay <strong class="text-rose-600">₹699</strong></p>
+                <p class="text-sm text-gray-600 mb-5">Open <strong class="text-rose-600">GPay, PhonePe, or Paytm</strong><br>Scan this QR to pay <strong class="text-rose-600">₹699</strong></p>
 
                 <div class="relative flex py-3 items-center w-full mb-3">
                     <div class="flex-grow border-t border-gray-200"></div>
@@ -567,24 +567,7 @@
             });
         }
 
-        // ─── TAP QR TO PAY ───
-        function openUpiApp() {
-            const trId = 'TR' + Date.now();
-            
-            // We use the direct phonepe:// scheme as it often bypasses the generic intent block on unverified merchants
-            // Fallback to generic upi:// if phonepe fails
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-            
-            let upiLink = `upi://pay?pa=${encodeURIComponent(UPI_PAYEE_ID)}&pn=${encodeURIComponent(UPI_PAYEE_NAME)}&am=${WORKSHOP_AMOUNT}&cu=INR&tn=${encodeURIComponent('Workshop Fee Payment')}&tr=${trId}&mc=0000`;
-            
-            // Try PhonePe specific intent first to force it to open
-            window.location.href = `phonepe://pay?pa=${encodeURIComponent(UPI_PAYEE_ID)}&pn=${encodeURIComponent(UPI_PAYEE_NAME)}&am=${WORKSHOP_AMOUNT}&cu=INR&tn=${encodeURIComponent('Workshop Fee Payment')}&tr=${trId}&mc=0000`;
-            
-            // Fallback to generic UPI chooser if PhonePe intent fails (happens almost instantly if not installed)
-            setTimeout(() => {
-                window.location.href = upiLink;
-            }, 500);
-        }
+
     </script>
 </body>
 </html>
