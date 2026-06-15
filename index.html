@@ -569,9 +569,11 @@
             const statusMsg = document.getElementById('statusMessage');
             
             const payload = {
+                id: Date.now(),
                 full_name: document.getElementById('fullName').value,
                 email: document.getElementById('email').value,
-                phone_number: document.getElementById('phone').value
+                phone_number: document.getElementById('phone').value,
+                attended: false
             };
 
             // Show success message and open payment modal immediately
@@ -582,19 +584,13 @@
             // Open payment modal after a brief delay
             setTimeout(() => openPaymentModal(), 500);
 
-            // Try to register with backend silently in the background
+            // Save Registration to Local Storage (Client-side database)
             try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const result = await response.json();
-                if (!response.ok) {
-                    console.warn('Registration API error:', result.detail || 'Unknown error');
-                }
+                const registrations = JSON.parse(localStorage.getItem('workshop_registrations') || '[]');
+                registrations.push(payload);
+                localStorage.setItem('workshop_registrations', JSON.stringify(registrations));
             } catch (error) {
-                console.warn('Backend not available, registration saved locally.');
+                console.warn('Could not save registration locally.');
             }
         });
 

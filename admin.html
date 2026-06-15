@@ -66,14 +66,13 @@
 
         async function fetchAttendees() {
             try {
-                const response = await fetch(GET_REGS_URL);
-                if (!response.ok) throw new Error("Failed to load records");
-                allAttendees = await response.json();
+                const data = JSON.parse(localStorage.getItem('workshop_registrations') || '[]');
+                allAttendees = data;
                 renderTable(allAttendees);
             } catch (err) {
                 console.error(err);
                 document.getElementById('attendeeTableBody').innerHTML = `
-                    <tr><td colspan="3" class="p-8 text-center text-red-500">Could not fetch data. Check if your API is running.</td></tr>
+                    <tr><td colspan="3" class="p-8 text-center text-red-500">Could not fetch data. Check your local storage.</td></tr>
                 `;
             }
         }
@@ -129,20 +128,11 @@
 
         async function toggleAttendance(id, currentStatus) {
             try {
-                const response = await fetch(`${PATCH_ATTENDANCE_BASE}/${id}/attendance`, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ attended: !currentStatus })
-                });
-
-                if (response.ok) {
-                    // Update locally for quick UI re-renders instead of fetching the whole database again
-                    allAttendees = allAttendees.map(p => p.id === id ? { ...p, attended: !currentStatus } : p);
-                    // Retain whatever search filter is typed
-                    filterTable();
-                }
+                allAttendees = allAttendees.map(p => p.id === id ? { ...p, attended: !currentStatus } : p);
+                localStorage.setItem('workshop_registrations', JSON.stringify(allAttendees));
+                filterTable();
             } catch (error) {
-                alert("Failed to sync attendance update with the server backend.");
+                alert("Failed to sync attendance update locally.");
             }
         }
 
