@@ -105,6 +105,14 @@
                     </td>
                     <td class="p-4 text-center">
                         <div class="flex items-center justify-center gap-2">
+                            <button onclick="togglePayment(${person.id}, ${person.paid})" 
+                                class="px-3 py-1.5 rounded-full text-xs font-semibold transition border ${
+                                    person.paid 
+                                    ? 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100' 
+                                    : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
+                                }">
+                                ${person.paid ? '💰 Paid' : '⏳ Unpaid'}
+                            </button>
                             <button onclick="toggleAttendance(${person.id}, ${person.attended})" 
                                 class="px-3 py-1.5 rounded-full text-xs font-semibold transition border ${
                                     person.attended 
@@ -141,6 +149,16 @@
                 filterTable();
             } catch (error) {
                 alert("Failed to sync attendance update locally.");
+            }
+        }
+
+        async function togglePayment(id, currentStatus) {
+            try {
+                allAttendees = allAttendees.map(p => p.id === id ? { ...p, paid: !currentStatus } : p);
+                localStorage.setItem('workshop_registrations', JSON.stringify(allAttendees));
+                filterTable();
+            } catch (error) {
+                alert("Failed to sync payment update locally.");
             }
         }
 
