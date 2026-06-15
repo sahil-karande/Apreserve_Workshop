@@ -453,91 +453,23 @@
                 </div>
             </div>
 
-            <!-- Tab Buttons -->
-            <div class="flex gap-2 p-1 bg-gray-100/60 rounded-xl mb-5" id="paymentTabs">
-                <button class="tab-btn active" data-tab="qr" onclick="switchTab('qr')">
-                    <span class="tab-icon">📷</span>
-                    Scan QR
-                </button>
-                <button class="tab-btn" data-tab="upi-id" onclick="switchTab('upi-id')">
-                    <span class="tab-icon">🆔</span>
-                    UPI ID
-                </button>
-                <button class="tab-btn" data-tab="direct" onclick="switchTab('direct')">
-                    <span class="tab-icon">⚡</span>
-                    Direct Pay
-                </button>
-            </div>
-
-
-            <!-- ── Tab 1: QR Code ── -->
-            <div class="tab-content active" id="tab-qr">
-                <div class="flex flex-col items-center text-center">
-                    <div class="qr-container mb-3">
-                        <img src="riddhi_qr.jpeg" alt="Payment QR Code" class="w-52 h-52 object-contain rounded-lg">
-                    </div>
-                    <p class="text-xs text-gray-500 mb-4">Open any UPI app → Scan this QR → Pay <strong class="text-rose-600">₹699</strong></p>
-
-                    <div class="divider-line w-full">
-                        <span>or copy upi id</span>
-                    </div>
-
-                    <div class="upi-copy-box px-4 py-2.5 flex items-center justify-between gap-3 w-full" onclick="copyUPI()">
-                        <span class="font-mono text-sm text-gray-800 font-semibold" id="upiIdText">9370158957@axl</span>
-                        <span class="text-xs text-rose-500 font-medium whitespace-nowrap">📋 Copy</span>
-                    </div>
+            <!-- ── Single View: QR Code & Copy UPI ── -->
+            <div class="flex flex-col items-center text-center mt-2">
+                <div class="qr-container mb-3 shadow-sm border border-gray-100 rounded-xl p-2 bg-white">
+                    <img src="riddhi_qr.jpeg" alt="Payment QR Code" class="w-52 h-52 object-contain rounded-lg">
                 </div>
-            </div>
+                <p class="text-sm text-gray-600 mb-5">Open <strong class="text-rose-600">GPay, PhonePe, or Paytm</strong><br>Scan this QR to pay <strong class="text-rose-600">₹699</strong></p>
 
-
-            <!-- ── Tab 2: Pay via UPI ID ── -->
-            <div class="tab-content" id="tab-upi-id">
-                <div class="flex flex-col items-center text-center">
-                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-rose-50 to-pink-50 mb-3">
-                        <span class="text-xl">🏦</span>
-                    </div>
-                    <p class="text-sm text-gray-600 mb-4">Enter your UPI ID to pay directly from your linked UPI app.</p>
-
-                    <div class="w-full text-left mb-4">
-                        <label class="block text-xs font-semibold text-gray-600 uppercase mb-1.5 tracking-wide">Your UPI ID</label>
-                        <input type="text" id="userUpiId" class="upi-input-field" placeholder="e.g. yourname@okhdfcbank">
-                        <p class="text-xs text-gray-400 mt-1.5">This will redirect you to your UPI app to complete payment of <strong class="text-rose-600">₹699</strong></p>
-                    </div>
-
-                    <button class="pay-btn" onclick="payViaUpiId()">
-                        <span>💰</span>
-                        Pay ₹699 via UPI
-                    </button>
+                <div class="relative flex py-3 items-center w-full mb-3">
+                    <div class="flex-grow border-t border-gray-200"></div>
+                    <span class="flex-shrink-0 mx-4 text-gray-400 text-xs font-bold tracking-widest uppercase">Or Pay Manually</span>
+                    <div class="flex-grow border-t border-gray-200"></div>
                 </div>
-            </div>
 
-
-            <!-- ── Tab 3: Direct Pay ── -->
-            <div class="tab-content" id="tab-direct">
-                <div class="flex flex-col items-center text-center">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-rose-100 to-pink-100 mb-4 pulse-icon">
-                        <span class="text-3xl">⚡</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">One-Tap Payment</h3>
-                    <p class="text-sm text-gray-500 mb-5">Click below to open your default UPI app and pay instantly.</p>
-
-                    <div class="w-full bg-gradient-to-r from-rose-50/60 to-pink-50/60 rounded-xl p-4 mb-5 border border-rose-100/60">
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-600">Workshop Fee</span>
-                            <span class="text-2xl font-extrabold text-rose-600">₹699</span>
-                        </div>
-                        <div class="flex items-center justify-between mt-1">
-                            <span class="text-xs text-gray-400">Pipe-cleaner Flower Bouquet Art</span>
-                            <span class="text-xs text-gray-400">One-time</span>
-                        </div>
-                    </div>
-
-                    <button class="pay-btn" onclick="directPay()">
-                        <span>🚀</span>
-                        Pay ₹699 Now
-                    </button>
-
-                    <p class="text-xs text-gray-400 mt-3">Supports GPay, PhonePe, Paytm & more</p>
+                <p class="text-xs text-gray-500 mb-2 w-full text-left">Copy this UPI ID and paste it in your app:</p>
+                <div class="px-4 py-3 flex items-center justify-between gap-3 w-full bg-gray-50 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100 transition active:scale-[0.98]" onclick="copyUPI()" id="copyBtnContainer">
+                    <span class="font-mono text-sm text-gray-800 font-semibold tracking-wide" id="upiIdText">9370158957@axl</span>
+                    <span class="text-xs text-rose-500 font-bold whitespace-nowrap px-3 py-1.5 bg-rose-50 rounded-md" id="copyBtn">📋 COPY</span>
                 </div>
             </div>
 
@@ -611,47 +543,28 @@
             if (e.key === 'Escape') closePaymentModal();
         });
 
-        // ─── TAB SWITCHING ───
-        function switchTab(tabName) {
-            // Update tab buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.tab === tabName);
-            });
-            // Update tab content
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.toggle('active', content.id === `tab-${tabName}`);
-            });
-        }
-
         // ─── COPY UPI ID ───
         function copyUPI() {
             navigator.clipboard.writeText(UPI_PAYEE_ID).then(() => {
                 const toast = document.getElementById('copyToast');
                 toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 2000);
-            });
-        }
-
-        // ─── PAY VIA USER'S UPI ID ───
-        function payViaUpiId() {
-            const userUpi = document.getElementById('userUpiId').value.trim();
-            if (!userUpi) {
-                document.getElementById('userUpiId').focus();
-                document.getElementById('userUpiId').style.borderColor = '#e11d48';
+                
+                // Update button visual
+                const btn = document.getElementById('copyBtn');
+                const container = document.getElementById('copyBtnContainer');
+                btn.innerHTML = '✓ COPIED';
+                btn.classList.replace('bg-rose-50', 'bg-green-100');
+                btn.classList.replace('text-rose-500', 'text-green-700');
+                container.classList.add('border-green-300', 'bg-green-50');
+                
                 setTimeout(() => {
-                    document.getElementById('userUpiId').style.borderColor = '';
-                }, 1500);
-                return;
-            }
-            // Build UPI deep link — the payer's UPI app will open with pre-filled details
-            const upiLink = `upi://pay?pa=${encodeURIComponent(UPI_PAYEE_ID)}&pn=${encodeURIComponent(UPI_PAYEE_NAME)}&am=${WORKSHOP_AMOUNT}&cu=INR&tn=${encodeURIComponent('Workshop Fee Payment')}`;
-            window.location.href = upiLink;
-        }
-
-        // ─── DIRECT PAY ───
-        function directPay() {
-            const upiLink = `upi://pay?pa=${encodeURIComponent(UPI_PAYEE_ID)}&pn=${encodeURIComponent(UPI_PAYEE_NAME)}&am=${WORKSHOP_AMOUNT}&cu=INR&tn=${encodeURIComponent('Workshop Fee Payment')}`;
-            window.location.href = upiLink;
+                    toast.classList.remove('show');
+                    btn.innerHTML = '📋 COPY';
+                    btn.classList.replace('bg-green-100', 'bg-rose-50');
+                    btn.classList.replace('text-green-700', 'text-rose-500');
+                    container.classList.remove('border-green-300', 'bg-green-50');
+                }, 2000);
+            });
         }
     </script>
 </body>
