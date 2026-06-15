@@ -124,6 +124,11 @@
                     </td>
                     <td class="p-4 text-center">
                         <div class="flex items-center justify-center gap-2">
+                            ${person.receipt ? `
+                            <button onclick="viewSnapshot('${person.id}')" 
+                                class="px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 transition">
+                                🖼️ Snapshot
+                            </button>` : ''}
                             <button onclick="togglePayment(${person.id}, ${person.paid})" 
                                 class="px-3 py-1.5 rounded-full text-xs font-semibold transition border ${
                                     person.paid 
@@ -191,6 +196,35 @@
 
         // Initial fetch when the dashboard window loads up
         window.onload = fetchAttendees;
+
+        // ─── SNAPSHOT VIEWER MODAL ───
+        function viewSnapshot(id) {
+            const person = allAttendees.find(p => String(p.id) === String(id));
+            if (person && person.receipt) {
+                document.getElementById('snapshotImg').src = person.receipt;
+                document.getElementById('snapshotOverlay').classList.remove('hidden');
+            }
+        }
+
+        function closeSnapshot() {
+            document.getElementById('snapshotOverlay').classList.add('hidden');
+            document.getElementById('snapshotImg').src = '';
+        }
     </script>
+
+    <!-- Snapshot Modal -->
+    <div id="snapshotOverlay" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity" onclick="closeSnapshot()">
+        <div class="bg-white rounded-2xl shadow-2xl p-4 max-w-lg w-full transform transition-all relative" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Payment Snapshot</h3>
+                <button onclick="closeSnapshot()" class="text-gray-400 hover:text-rose-500 bg-gray-100 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition">
+                    ✕
+                </button>
+            </div>
+            <div class="bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex items-center justify-center min-h-[300px]">
+                <img id="snapshotImg" src="" alt="Payment Receipt" class="max-w-full h-auto max-h-[70vh] object-contain rounded-lg">
+            </div>
+        </div>
+    </div>
 </body>
 </html>
