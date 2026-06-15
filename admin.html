@@ -5,8 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard — Workshop Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* ── Pink Watercolor Background ── */
+        body.watercolor-bg {
+            position: relative;
+            min-height: 100vh;
+            background: url('bg-desktop.png') no-repeat center center fixed;
+            background-size: 100% 100%;
+            background-color: #fde8ec;
+            overflow-x: hidden;
+        }
+
+        /* Mobile background */
+        @media (max-width: 768px) {
+            body.watercolor-bg {
+                background-image: url('bg-mobile.jpg');
+                background-attachment: scroll;
+            }
+        }
+    </style>
 </head>
-<body class="bg-gray-50 min-h-screen text-gray-800 font-sans">
+<body class="watercolor-bg min-h-screen text-gray-800 font-sans">
 
     <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
         <header class="flex justify-between items-center mb-8">
