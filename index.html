@@ -489,9 +489,13 @@
                 </div>
 
                 <input type="file" id="receiptUpload" accept="image/*" class="hidden" onchange="handleReceiptUpload(event)">
-                <label for="receiptUpload" class="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-bold rounded-lg transition-colors shadow-sm cursor-pointer border border-gray-300">
+                <label for="receiptUpload" class="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-bold rounded-lg transition-colors shadow-sm cursor-pointer border border-gray-300 mb-4">
                     <span id="uploadLabel">📤 Upload Payment Snapshot</span>
                 </label>
+
+                <button onclick="finishRegistration()" class="w-full py-3 bg-gray-900 hover:bg-black text-white text-sm font-bold rounded-xl transition-colors shadow-md">
+                    Done
+                </button>
             </div>
 
         </div>
@@ -633,6 +637,28 @@
                 img.src = e.target.result;
             }
             reader.readAsDataURL(file);
+        }
+
+        // ─── FINISH AND CLOSE ───
+        function finishRegistration() {
+            closePaymentModal();
+            
+            // Attempt to close the window (works if opened via script or in some mobile contexts)
+            window.close();
+            
+            // If the browser blocks window.close(), replace the body with a nice completion screen
+            setTimeout(() => {
+                document.body.innerHTML = `
+                    <div class="min-h-screen flex flex-col items-center justify-center watercolor-bg px-4 text-center">
+                        <div class="bg-white/80 backdrop-blur-md p-8 rounded-3xl shadow-xl max-w-sm w-full border border-white/50">
+                            <div class="text-6xl mb-5">🎉</div>
+                            <h1 class="text-2xl font-bold text-gray-800 mb-2">You're All Set!</h1>
+                            <p class="text-gray-600 mb-6 text-sm">Thank you for registering. We have securely saved your details and receipt.</p>
+                            <p class="text-xs font-bold text-rose-500 uppercase tracking-widest bg-rose-50 py-2 rounded-lg">You may now close this tab</p>
+                        </div>
+                    </div>
+                `;
+            }, 100);
         }
 
     </script>
