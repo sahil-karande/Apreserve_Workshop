@@ -7,6 +7,9 @@
     <link rel="icon" type="image/png" href="apreservelogo.png">
     <meta name="description" content="Register for the Pipe-cleaner Flower Bouquet Art Workshop. Learn to craft vibrant, everlasting blossoms with expert guidance.">
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -326,15 +329,12 @@
 <body class="watercolor-bg min-h-screen flex flex-col justify-start">
     <main class="flex flex-col items-center justify-start w-full px-4 pt-8 pb-10 gap-6 flex-grow">
 
-    <!-- ── Apreserve Header ── -->
     <header style="text-align: center; margin-bottom: 0.5rem;">
         <div style="font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; color: #7a2e3f; line-height: 1.1; letter-spacing: 0.06em; text-shadow: 0 2px 4px rgba(163,70,90,0.1);">Apreserve</div>
         <div style="font-family: 'Inter', sans-serif; font-size: 0.85rem; color: #a3596b; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500; margin-top: 4px;">the token of love</div>
     </header>
-    <!-- Divider after header -->
     <div style="width: 80%; max-width: 320px; height: 2px; margin: 0 auto; background: linear-gradient(90deg, transparent, rgba(163,70,90,0.3), rgba(196,104,124,0.45), rgba(163,70,90,0.3), transparent); border-radius: 1px;"></div>
 
-    <!-- ── Registration Card (Glassmorphism) ── -->
     <div class="card-container glass-card rounded-2xl shadow-xl max-w-4xl w-full overflow-hidden flex flex-col md:flex-row">
         <div class="md:w-1/2 glass-left p-8 flex flex-col justify-between relative overflow-hidden">
             
@@ -344,7 +344,6 @@
                 <p class="mt-2 text-sm" style="color: #8b3a4a;">Learn the craft of shaping vibrant, everlasting blossoms using simple pipe cleaners.</p>
             </div>
 
-            <!-- Divider before event details -->
             <div style="width: 100%; height: 2px; margin: 1.5rem 0; background: linear-gradient(90deg, transparent, rgba(163,70,90,0.3), rgba(196,104,124,0.45), rgba(163,70,90,0.3), transparent); border-radius: 1px; position: relative; z-index: 10;"></div>
 
             <div class="relative z-10 space-y-3 text-sm" style="color: #8b3a4a;">
@@ -355,7 +354,7 @@
                     <span>🕐</span> <strong style="color: #7a2e3f;">Time:</strong> 12 PM Onwards
                 </div>
                 <div class="flex items-center gap-2">
-                    <span>📍</span> <strong style="color: #7a2e3f;">Venue:</strong> <a href="https://www.google.com/maps/place/Pours+And+Plate/@21.1206452,79.0619794,967m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3bd4c111e1a81bbd:0xf74e73268bd6f113!8m2!3d21.1206402!4d79.0645543!16s%2Fg%2F11rtqd6_q9?entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="hover:underline transition-colors" title="View on Google Maps">Pours and Plate <span class="text-xs text-rose-600 ml-1">(View Map)</span></a>
+                    <span>📍</span> <strong style="color: #7a2e3f;">Venue:</strong> <a href="http://maps.google.com/?q=Pours+and+Plate" target="_blank" rel="noopener noreferrer" class="hover:underline transition-colors" title="View on Google Maps">Pours and Plate <span class="text-xs text-rose-600 ml-1">(View Map)</span></a>
                 </div>
                 <div class="flex items-center gap-2">
                     <span>✨</span> Materials provided on-site!
@@ -363,11 +362,9 @@
             </div>
         </div>
 
-        <!-- Vertical divider between left and right panels (desktop) -->
         <div class="hidden md:block" style="width: 1.5px; background: linear-gradient(180deg, transparent, rgba(163,70,90,0.25), rgba(196,104,124,0.35), rgba(163,70,90,0.25), transparent); margin: 1.5rem 0;"></div>
 
         <div class="md:w-1/2 glass-right p-8">
-            <!-- Horizontal divider before Secure Your Spot (mobile) -->
             <div class="md:hidden" style="width: 100%; height: 1px; margin-bottom: 1.5rem; background: linear-gradient(90deg, transparent, rgba(163,70,90,0.3), rgba(196,104,124,0.4), rgba(163,70,90,0.3), transparent); border-radius: 1px;"></div>
             <h2 class="text-2xl font-bold text-gray-800 mb-2">Secure Your Spot</h2>
             <p class="text-gray-600 text-sm mb-6">Spaces are limited to ensure personalized guidance for every creator.</p>
@@ -395,7 +392,6 @@
 
             <div id="statusMessage" class="mt-4 p-3 rounded-lg text-sm text-center hidden"></div>
 
-            <!-- Contact Queries -->
             <div style="width: 100%; height: 1.5px; margin: 1.5rem 0 1rem; background: linear-gradient(90deg, transparent, rgba(163,70,90,0.3), rgba(196,104,124,0.45), rgba(163,70,90,0.3), transparent); border-radius: 1px;"></div>
             <div class="space-y-3">
                 <p class="font-bold text-xs uppercase tracking-wider text-center" style="color: #7a2e3f;">For Queries, Contact:</p>
@@ -422,23 +418,17 @@
     </div>
     </main>
 
-    <!-- ── Footer ── -->
     <footer class="w-[96%] max-w-7xl mx-auto text-center text-sm py-6 mt-auto mb-4 rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.1)]" style="background-color: #7a2e3f; color: #fde8ec;">
-        <p class="font-medium tracking-wide">&copy; 2026 Apreserve. All rights reserved.</p>
+        <p class="font-medium tracking-wide">© 2026 Apreserve. All rights reserved.</p>
         <p class="mt-1.5 opacity-90">Website developed by <a href="https://www.linkedin.com/in/sahil-karande-5272652a6/" target="_blank" rel="noopener noreferrer" class="font-semibold text-white underline transition-colors hover:text-gray-200">Sahil Karande</a></p>
     </footer>
 
-    <!-- ══════════════════════════════════════════════ -->
-    <!-- ── Payment Modal Overlay ── -->
-    <!-- ══════════════════════════════════════════════ -->
     <div id="paymentOverlay" class="payment-overlay">
         <div class="payment-overlay-bg" onclick="closePaymentModal()"></div>
         <div class="payment-modal p-6 md:p-8">
 
-            <!-- Close Button -->
             <button class="modal-close-btn" onclick="closePaymentModal()" aria-label="Close payment">✕</button>
 
-            <!-- Header -->
             <div class="text-center mb-5">
                 <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-rose-100 to-pink-100 mb-3">
                     <span class="text-2xl">💳</span>
@@ -453,7 +443,6 @@
                 </div>
             </div>
 
-            <!-- ── Single View: QR Code & Copy UPI ── -->
             <div class="flex flex-col items-center text-center mt-2">
                 <div class="qr-container mb-3 shadow-sm border border-gray-100 rounded-xl p-2 bg-white">
                     <img src="riddhi_qr.jpeg" alt="Payment QR Code" class="w-52 h-52 object-contain rounded-lg">
@@ -473,8 +462,6 @@
                 </div>
             </div>
 
-
-            <!-- Footer Instructions -->
             <div class="mt-5 pt-4 border-t border-gray-200/50 flex flex-col items-center">
                 <p class="text-xs text-gray-500 mb-3 text-center">After paying, please send the screenshot to confirm your seat.</p>
                 <a href="https://wa.me/919370158957?text=Hi%20Riddhi,%20I%20just%20paid%20%E2%82%B9699%20for%20the%20Pipe-cleaner%20Flower%20Bouquet%20Art%20Workshop.%20Here%20is%20my%20payment%20screenshot:" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-[#25D366] hover:bg-[#20bd5a] text-white text-sm font-bold rounded-lg transition-colors shadow-sm mb-3">
@@ -501,23 +488,25 @@
         </div>
     </div>
 
-    <!-- Copy Toast Notification -->
     <div id="copyToast" class="copy-toast">✅ UPI ID copied to clipboard!</div>
 
     <script>
-        // ─── CONFIG ───
-        const API_URL = 'http://127.0.0.1:8000/api/register';
-        const UPI_PAYEE_ID = '9370158957@axl';      // ← Replace with your actual UPI ID
-        const UPI_PAYEE_NAME = 'RIDDHI SHRAWAN KURVE';
-        const WORKSHOP_AMOUNT = 699;
+        // ─── CONFIG (Replace with your actual data) ───
+        const SUPABASE_URL = 'https://your-project-id.supabase.co'; // <── Paste Data API URL
+        const SUPABASE_ANON_KEY = 'your-anon-public-key';           // <── Paste anon API Key
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const UPI_PAYEE_ID = '9370158957@axl';
+        let currentUserId = null;
 
         // ─── REGISTRATION FORM ───
         document.getElementById('registrationForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const statusMsg = document.getElementById('statusMessage');
             
+            currentUserId = Date.now();
             const payload = {
-                id: Date.now(),
+                id: currentUserId,
                 full_name: document.getElementById('fullName').value,
                 email: document.getElementById('email').value,
                 phone_number: document.getElementById('phone').value,
@@ -534,14 +523,9 @@
             // Open payment modal after a brief delay
             setTimeout(() => openPaymentModal(), 500);
 
-            // Save Registration to Local Storage (Client-side database)
-            try {
-                const registrations = JSON.parse(localStorage.getItem('workshop_registrations') || '[]');
-                registrations.push(payload);
-                localStorage.setItem('workshop_registrations', JSON.stringify(registrations));
-            } catch (error) {
-                console.warn('Could not save registration locally.');
-            }
+            // Cloud Insertion into Supabase
+            const { error } = await supabaseClient.from('workshop_registrations').insert([payload]);
+            if (error) console.error('Database Sync Error:', error);
         });
 
         // ─── PAYMENT MODAL ───
@@ -584,11 +568,10 @@
             });
         }
 
-
-        // ─── RECEIPT UPLOAD ───
+        // ─── COMPRESSED CLOUD SNAPSHOT UPLOAD ───
         function handleReceiptUpload(event) {
             const file = event.target.files[0];
-            if (!file) return;
+            if (!file || !currentUserId) return;
 
             const label = document.getElementById('uploadLabel');
             label.innerText = "⏳ Processing...";
@@ -596,10 +579,9 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
-                img.onload = function() {
-                    // Compress image using canvas
+                img.onload = async function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 500; // keep it small for localStorage
+                    const MAX_WIDTH = 500;
                     const scaleSize = MAX_WIDTH / img.width;
                     
                     if (scaleSize < 1) {
@@ -613,24 +595,20 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                    // Convert to base64 with high compression (0.5 quality)
+                    // Convert to compressed base64 string
                     const base64Str = canvas.toDataURL('image/jpeg', 0.5);
 
-                    // Save to the very last registration in local storage
-                    try {
-                        const registrations = JSON.parse(localStorage.getItem('workshop_registrations') || '[]');
-                        if (registrations.length > 0) {
-                            registrations[registrations.length - 1].receipt = base64Str;
-                            localStorage.setItem('workshop_registrations', JSON.stringify(registrations));
-                            
-                            label.innerText = "✅ Snapshot Saved!";
-                            label.parentElement.classList.replace('bg-gray-100', 'bg-green-100');
-                            label.parentElement.classList.replace('hover:bg-gray-200', 'hover:bg-green-200');
-                            label.parentElement.classList.replace('text-gray-700', 'text-green-800');
-                            label.parentElement.classList.replace('border-gray-300', 'border-green-300');
-                        }
-                    } catch (err) {
-                        alert("Storage limit reached! Please use the WhatsApp option instead.");
+                    // Update row directly in the database using the captured dynamic ID
+                    const { error } = await supabaseClient
+                        .from('workshop_registrations')
+                        .update({ receipt: base64Str })
+                        .eq('id', currentUserId);
+
+                    if (!error) {
+                        label.innerText = "✅ Snapshot Saved!";
+                        label.parentElement.className = "flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-green-100 hover:bg-green-200 text-green-800 text-sm font-bold rounded-lg transition-colors shadow-sm cursor-pointer border border-green-300 mb-4";
+                    } else {
+                        console.error('Snapshot Upload Error:', error);
                         label.innerText = "📤 Upload Failed";
                     }
                 }
@@ -643,10 +621,7 @@
         function finishRegistration() {
             closePaymentModal();
             
-            // Attempt to close the window (works if opened via script or in some mobile contexts)
-            window.close();
-            
-            // If the browser blocks window.close(), replace the body with a nice completion screen
+            // Replaces the viewport with a clean confirmation panel if tab context doesn't auto-close
             setTimeout(() => {
                 document.body.innerHTML = `
                     <div class="min-h-screen flex flex-col items-center justify-center watercolor-bg px-4 text-center">
@@ -660,7 +635,6 @@
                 `;
             }, 100);
         }
-
     </script>
 </body>
 </html>
