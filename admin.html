@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard — Workshop Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         /* ── Pink Watercolor Background ── */
         body.watercolor-bg {
@@ -71,27 +74,50 @@
                         </tr>
                     </thead>
                     <tbody id="attendeeTableBody" class="divide-y divide-gray-50 text-sm">
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 
+    <div id="snapshotOverlay" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity" onclick="closeSnapshot()">
+        <div class="bg-white rounded-2xl shadow-2xl p-4 max-w-lg w-full transform transition-all relative" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Payment Snapshot</h3>
+                <button onclick="closeSnapshot()" class="text-gray-400 hover:text-rose-500 bg-gray-100 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition">
+                    ✕
+                </button>
+            </div>
+            <div class="bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex items-center justify-center min-h-[300px]">
+                <img id="snapshotImg" src="" alt="Payment Receipt" class="max-w-full h-auto max-h-[70vh] object-contain rounded-lg">
+            </div>
+        </div>
+    </div>
+
     <script>
-        const GET_REGS_URL = 'http://127.0.0.1:8000/api/admin/registrations';
-        const PATCH_ATTENDANCE_BASE = 'http://127.0.0.1:8000/api/admin/registrations';
+        // ─── CONFIG (Replace with your actual data) ───
+        const SUPABASE_URL = 'https://your-project-id.supabase.co'; // <── Paste Data API URL
+        const SUPABASE_ANON_KEY = 'your-anon-public-key';           // <── Paste anon API Key
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let allAttendees = []; // Global memory array for searching
 
+        // Fetch attendees directly from Cloud Database
         async function fetchAttendees() {
             try {
-                const data = JSON.parse(localStorage.getItem('workshop_registrations') || '[]');
+                const { data, error } = await supabaseClient
+                    .from('workshop_registrations')
+                    .select('*')
+                    .order('id', { ascending: false });
+
+                if (error) throw error;
+
                 allAttendees = data;
                 renderTable(allAttendees);
             } catch (err) {
                 console.error(err);
                 document.getElementById('attendeeTableBody').innerHTML = `
-                    <tr><td colspan="3" class="p-8 text-center text-red-500">Could not fetch data. Check your local storage.</td></tr>
+                    <tr><td colspan="3" class="p-8 text-center text-red-500">Could not fetch cloud database records. Check your credentials.</td></tr>
                 `;
             }
         }
@@ -168,29 +194,54 @@
 
         async function toggleAttendance(id, currentStatus) {
             try {
+                const { error } = await supabaseClient
+                    .from('workshop_registrations')
+                    .update({ attended: !currentStatus })
+                    .eq('id', id);
+
+                if (error) throw error;
+
                 allAttendees = allAttendees.map(p => p.id === id ? { ...p, attended: !currentStatus } : p);
-                localStorage.setItem('workshop_registrations', JSON.stringify(allAttendees));
                 filterTable();
             } catch (error) {
-                alert("Failed to sync attendance update locally.");
+                console.error(error);
+                alert("Failed to sync attendance update with the cloud database.");
             }
         }
 
         async function togglePayment(id, currentStatus) {
             try {
+                const { error } = await supabaseClient
+                    .from('workshop_registrations')
+                    .update({ paid: !currentStatus })
+                    .eq('id', id);
+
+                if (error) throw error;
+
                 allAttendees = allAttendees.map(p => p.id === id ? { ...p, paid: !currentStatus } : p);
-                localStorage.setItem('workshop_registrations', JSON.stringify(allAttendees));
                 filterTable();
             } catch (error) {
-                alert("Failed to sync payment update locally.");
+                console.error(error);
+                alert("Failed to sync payment update with the cloud database.");
             }
         }
 
-        function deleteAttendee(id) {
+        async function deleteAttendee(id) {
             if (confirm("Are you sure you want to delete this registration?")) {
-                allAttendees = allAttendees.filter(p => p.id !== id);
-                localStorage.setItem('workshop_registrations', JSON.stringify(allAttendees));
-                filterTable();
+                try {
+                    const { error } = await supabaseClient
+                        .from('workshop_registrations')
+                        .delete()
+                        .eq('id', id);
+
+                    if (error) throw error;
+
+                    allAttendees = allAttendees.filter(p => p.id !== id);
+                    filterTable();
+                } catch (error) {
+                    console.error(error);
+                    alert("Failed to delete the registration from the cloud database.");
+                }
             }
         }
 
@@ -211,20 +262,5 @@
             document.getElementById('snapshotImg').src = '';
         }
     </script>
-
-    <!-- Snapshot Modal -->
-    <div id="snapshotOverlay" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-opacity" onclick="closeSnapshot()">
-        <div class="bg-white rounded-2xl shadow-2xl p-4 max-w-lg w-full transform transition-all relative" onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-gray-900">Payment Snapshot</h3>
-                <button onclick="closeSnapshot()" class="text-gray-400 hover:text-rose-500 bg-gray-100 hover:bg-rose-50 rounded-full w-8 h-8 flex items-center justify-center transition">
-                    ✕
-                </button>
-            </div>
-            <div class="bg-gray-50 rounded-xl overflow-hidden border border-gray-100 flex items-center justify-center min-h-[300px]">
-                <img id="snapshotImg" src="" alt="Payment Receipt" class="max-w-full h-auto max-h-[70vh] object-contain rounded-lg">
-            </div>
-        </div>
-    </div>
 </body>
 </html>
