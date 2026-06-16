@@ -114,14 +114,16 @@
 
                 // Automatically fix legacy data: If they uploaded a snapshot, they should be marked as paid
                 allAttendees = data.map(person => {
-                    if (person.receipt && !person.paid) {
-                        person.paid = true;
+                    let updatedPerson = { ...person };
+                    // If they have a valid receipt image but are still marked unpaid
+                    if (updatedPerson.receipt && updatedPerson.receipt.length > 20 && !updatedPerson.paid) {
+                        updatedPerson.paid = true;
                         // Silently update Supabase in the background to correct the data
                         supabaseClient.from('workshop_registrations')
                             .update({ paid: true })
-                            .eq('id', person.id).then();
+                            .eq('id', updatedPerson.id).then();
                     }
-                    return person;
+                    return updatedPerson;
                 });
                 renderTable(allAttendees);
             } catch (err) {
