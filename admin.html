@@ -112,7 +112,17 @@
 
                 if (error) throw error;
 
-                allAttendees = data;
+                // Automatically fix legacy data: If they uploaded a snapshot, they should be marked as paid
+                allAttendees = data.map(person => {
+                    if (person.receipt && !person.paid) {
+                        person.paid = true;
+                        // Silently update Supabase in the background to correct the data
+                        supabaseClient.from('workshop_registrations')
+                            .update({ paid: true })
+                            .eq('id', person.id).then();
+                    }
+                    return person;
+                });
                 renderTable(allAttendees);
             } catch (err) {
                 console.error(err);
